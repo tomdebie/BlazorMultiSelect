@@ -1,0 +1,10 @@
+.transition-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in-out, opacity 0.25s ease-in-out;
+}
+
+.dropdown-menu.show.transition-dropdown {
+    max-height: 250px; /* same as inline max-height */
+    opacity: 1;
+}

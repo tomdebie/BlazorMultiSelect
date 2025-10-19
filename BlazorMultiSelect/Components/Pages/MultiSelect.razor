@@ -1,0 +1,75 @@
+@using Microsoft.AspNetCore.Components.Web
+@typeparam TItem
+
+<div class="custom-multiselect w-100" @ref="_container">
+    <div class="multiselect-trigger" tabindex="0" @onclick="ToggleDropdown">
+        <span class="selected-text">@DisplayText</span>
+        <span class="multiselect-caret"></span>
+    </div>
+
+    @if (_dropdownOpen)
+    {
+        <div class="multiselect-dropdown">
+            @foreach (var item in Items)
+            {
+                var value = GetValue(item);
+                var text = GetText(item);
+                var isChecked = SelectedValues.Contains(value);
+
+                <div class="multiselect-option" @onclick="() => ToggleSelection(value)">
+                    <input type="checkbox" checked="@isChecked" />
+                    <label>@text</label>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Inject] public required IJSRuntime JS { get; set; }
+    
+    [Parameter] public IEnumerable<TItem> Items { get; set; } = [];
+    [Parameter] public string ValueField { get; set; } = string.Empty;
+    [Parameter] public string TextField { get; set; } = string.Empty;
+    [Parameter] public EventCallback<List<string>> SelectedValuesChanged { get; set; }
+    [Parameter] public List<string> SelectedValues { get; set; } = [];
+    private bool _dropdownOpen;
+    private ElementReference _container;
+
+    private void ToggleDropdown() => _dropdownOpen = !_dropdownOpen;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("multiSelect.init", _container);
+        }
+    }
+    
+    private async Task ToggleSelection(string value)
+    {
+        if (SelectedValues.Contains(value))
+            SelectedValues.Remove(value);
+        else
+            SelectedValues.Add(value);
+
+        //SelectedValuesChanged.InvokeAsync(SelectedValues);
+        await SelectedValuesChanged.InvokeAsync(SelectedValues);
+    }
+
+    private string GetValue(TItem item)
+        => item?.GetType().GetProperty(ValueField)?.GetValue(item)?.ToString() ?? string.Empty;
+
+    private string GetText(TItem item)
+        => item?.GetType().GetProperty(TextField)?.GetValue(item)?.ToString() ?? string.Empty;
+
+    private string DisplayText =>
+        SelectedValues.Count switch
+        {
+            0 => "Select options",
+            <= 2 => string.Join(", ", Items
+                .Where(i => SelectedValues.Contains(GetValue(i)))
+                .Select(GetText)),
+            _ => $"{SelectedValues.Count} selected"
+        };
+}

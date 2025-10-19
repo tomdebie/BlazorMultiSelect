@@ -1,0 +1,27 @@
+@page "/test"
+@rendermode InteractiveServer
+
+<h3>Multiselect Example</h3>
+
+<MultiSelect TItem="Country"
+             Items="@Countries"
+             ValueField="Id"
+             TextField="Name"
+             @bind-SelectedValues="@SelectedCountryIds" />
+
+<div class="mt-3">
+    <strong>Selected:</strong>
+    @string.Join(", ", SelectedCountryIds)
+</div>
+
+@code {
+    private List<Country> Countries = new()
+    {
+        new() { Id = "1", Name = "USA" },
+        new() { Id = "2", Name = "Canada" },
+        new() { Id = "3", Name = "Mexico" },
+    };
+
+    private List<string> SelectedCountryIds = new();
+    public class Country { public string Id { get; set; } = ""; public string Name { get; set; } = ""; }
+}
