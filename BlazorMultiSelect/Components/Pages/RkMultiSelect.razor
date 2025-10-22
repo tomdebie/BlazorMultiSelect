@@ -1,0 +1,45 @@
+﻿@typeparam TItem
+@inherits InputBase<List<TItem>>
+
+<div class="rk-multiselect mb-2" id="@Id" @ref="_multiSelectElementReference">
+    <div class="rk-multiselect-select">
+        <div class="rk-multiselect-button form-control"
+             role="combobox"
+             tabindex="0"
+             aria-required="@IsRequired"
+             aria-expanded="false"
+             aria-haspopup="listbox"
+             aria-controls="rk-multiselect-listbox"
+             aria-labelledby="rk-multiselect-label-@Id">
+            <div class="rk-multiselect-selecteditems">
+                @SelectedItemsDisplayText
+            </div>
+            <div class="rk-multiselect-button-caret"></div>
+        </div>
+        <p class="rk-multiselect-label @(CurrentValue?.Count > 0 ? "has-value" : string.Empty)">
+            @Label @if (IsRequired) { <span class="rk-label-required"> *</span> }
+        </p>
+    </div>
+    <span class="visually-hidden">
+        Gebruik de pijltjestoetsen om door de opties te navigeren, de spatiebalk of enter om te selecteren, escape om te sluiten.
+    </span>
+    <div class="rk-multiselect-dropdown"
+         role="listbox"
+         aria-labelledby="rk-multiselect-label-@Id"
+         aria-multiselectable="true"
+         aria-hidden="true">
+        @foreach(var item in Items.OrderBy(x => DisplayTextSelector(x)))
+        {
+            var selected = IsChecked(item);
+            var optionId = $"rk-option-{@Id}-{ValueSelector(item)}";
+
+            <div class="form-check" role="option" aria-selected="@selected.ToString().ToLower()" tabindex="-1" data-value="@ValueSelector(item)">
+                <input @key="item" type="checkbox" id="@optionId" checked="@selected" class="form-check-input m-0" @onchange="@(e => OnCheckboxChanged(e, item))" />
+                <label for="@optionId" class="form-check-label py-2 ps-3">@DisplayTextSelector(item)</label>
+            </div>
+        }
+    </div>
+    <div class="invalid-feedback">
+        <ValidationMessage For="@ValueExpression" />
+    </div>
+</div>

@@ -1,0 +1,149 @@
+﻿.rk-multiselect {
+    position: relative;
+}
+
+.rk-multiselect-select > .form-control {
+    /* copied from bootstrap to get matching size: .form-floating > .form-control*/
+    padding: 1rem .75rem;
+    height: calc(3.5rem + calc(var(--bs-border-width) * 2));
+    min-height: calc(3.5rem + calc(var(--bs-border-width) * 2));
+    line-height: 1.25;
+}
+
+
+/* Label */
+.rk-multiselect-label {
+    margin: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+    height: 100%;
+    text-align: start;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    transform-origin: 0px 0px;
+    padding: 1rem 0.75rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border: var(--bs-border-width) solid transparent;
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+    .rk-multiselect-label.has-value {
+        color: rgba(var(--bs-body-color-rgb), .65);
+        transform: scale(.85) translateY(-.5rem) translateX(.15rem);
+    }
+
+    .rk-multiselect-label .rk-label-required {
+        color: var(--rkv-red-600);
+    }
+
+
+/* Selected items */
+.rk-multiselect-selecteditems {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    word-wrap: break-word;
+    padding-top: .75rem;
+}
+
+
+/* Open/closed indicator */
+.rk-multiselect-button-caret {
+    width: 2.5rem;
+}
+
+    .rk-multiselect-button-caret::before {
+        content: '';
+        position: absolute;
+        right: 2.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 1.75rem;
+        background-color: var(--rkv-neutral-300);
+    }
+
+.rk-multiselect-button::after {
+    content: 'keyboard_arrow_down';
+    font-family: 'Material Symbols Rounded';
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4em;
+    transition: transform 0.2s ease;
+}
+
+.rk-multiselect-button[aria-expanded="true"]::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+
+/* Dropdown */
+.rk-multiselect-dropdown {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: var(--rkv-white);
+    border: 1px solid var(--rkv-neutral-300);
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+    .rk-multiselect-dropdown[aria-hidden="false"] {
+        display: block;
+    }
+
+
+/* Dropdown options */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+    .form-check:hover,
+    .form-check:focus {
+        background-color: var(--rkv-bg-light-blue);
+        outline: none;
+    }
+
+    .form-check:focus {
+        box-shadow: inset 0 0 0 2px var(--rkv-blue-500);
+    }
+
+    .form-check input[type="checkbox"] {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .form-check .form-check-label {
+        cursor: pointer;
+        margin: 0;
+        flex: 1;
+        font-size: 1.2rem;
+    }
+
+
+/* Validation */
+.invalid-feedback {
+    display: block
+}
+
+/*.rk-multiselect-select:has(~..invalid-feedback:not(:empty)) .rk-multiselect-button {
+    border: 1px var(--bs-form-invalid-border-color) solid;
+    border-radius: var(--bs-border-radius);
+    box-shadow: none !important;
+}*/
+/*.rk-multiselect .rk-multiselect-button:not(.invalid-feedback:empty) {
+    border: 1px var(--bs-form-invalid-border-color) solid;
+    border-radius: var(--bs-border-radius);
+    box-shadow: none !important;
+}*/
