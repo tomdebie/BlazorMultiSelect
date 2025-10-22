@@ -49,36 +49,26 @@
     padding-top: .75rem;
 }
 
-
-/* Open/closed indicator */
-.rk-multiselect-button-caret {
-    width: 2.5rem;
+.rk-multiselect-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
-    .rk-multiselect-button-caret::before {
-        content: '';
-        position: absolute;
-        right: 2.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 1px;
-        height: 1.75rem;
-        background-color: var(--rkv-neutral-300);
+.rk-multiselect-button-caret{
+    padding-left: 10px;
+    border-left: 1px solid red; /*TODO: Fix correct colour*/
+    
+    &::after {
+        content: 'keyboard_arrow_down';
+        font-family: 'Material Symbols Rounded';
+        font-size: 1.4em;
     }
-
-.rk-multiselect-button::after {
-    content: 'keyboard_arrow_down';
-    font-family: 'Material Symbols Rounded';
-    position: absolute;
-    right: 0.5em;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.4em;
-    transition: transform 0.2s ease;
 }
 
-.rk-multiselect-button[aria-expanded="true"]::after {
-    transform: translateY(-50%) rotate(180deg);
+[aria-expanded="true"]>.rk-multiselect-button-caret::after {
+    content:'keyboard_arrow_up';
 }
 
 
@@ -137,13 +127,6 @@
     display: block
 }
 
-/*.rk-multiselect-select:has(~..invalid-feedback:not(:empty)) .rk-multiselect-button {
-    border: 1px var(--bs-form-invalid-border-color) solid;
-    border-radius: var(--bs-border-radius);
-    box-shadow: none !important;
-}*/
-/*.rk-multiselect .rk-multiselect-button:not(.invalid-feedback:empty) {
-    border: 1px var(--bs-form-invalid-border-color) solid;
-    border-radius: var(--bs-border-radius);
-    box-shadow: none !important;
-}*/
+.rk-multiselect-select:not(:has(.rk-multiselect-label.has-value)) > .form-control:focus{
+    box-shadow: 0 0 0 .25rem red; /*TODO: Fix correct colour*/
+}
