@@ -4,7 +4,7 @@ using Microsoft.JSInterop;
 
 namespace BlazorMultiSelect.Components.Pages;
 
-public partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyncDisposable
+public sealed partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyncDisposable
 {
     [Inject] public required IJSRuntime JsRuntime { get; set; }
 
@@ -16,6 +16,7 @@ public partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyncDispos
     [Parameter, EditorRequired] public required Func<TItem, int> ValueSelector { get; set; }
     [Parameter, EditorRequired] public required Func<TItem, string> DisplayTextSelector { get; set; }
 
+    private IJSObjectReference? _jsModule;
     private ElementReference _multiSelectElementReference;
     private DotNetObjectReference<RkMultiSelect<TItem>>? _multiSelectDotnetReference;
     private string SelectedItemsDisplayText { get; set; } = string.Empty;
@@ -25,7 +26,9 @@ public partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyncDispos
         if (firstRender)
         {
             _multiSelectDotnetReference = DotNetObjectReference.Create(this);
-            await JsRuntime.InvokeVoidAsync("multiSelect.init", _multiSelectElementReference, _multiSelectDotnetReference);
+            _jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Pages/RkMultiSelect.razor.js");
+            await _jsModule.InvokeVoidAsync("init", _multiSelectElementReference, _multiSelectDotnetReference);
+            //await JsRuntime.InvokeVoidAsync("multiSelect.init", _multiSelectElementReference, _multiSelectDotnetReference);
             if (AutoFocus)
             {
                 await _multiSelectElementReference.FocusAsync();
@@ -88,7 +91,16 @@ public partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyncDispos
 
     public async ValueTask DisposeAsync()
     {
-        await JsRuntime.InvokeVoidAsync("multiSelect.cleanup"); // TODO: remove eventhandlers
-        _multiSelectDotnetReference?.Dispose();
+        try
+        {
+            if (_jsModule != null)
+            {
+                await _jsModule.InvokeVoidAsync("dispose", _multiSelectElementReference);
+                await _jsModule.DisposeAsync();
+            }
+            _multiSelectDotnetReference?.Dispose();
+        }
+        catch (JSDisconnectedException)
+        { }
     }
 }

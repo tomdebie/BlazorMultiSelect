@@ -75,6 +75,8 @@ Welcome to your new app.
     <strong>Selected Fruits:</strong> @string.Join(", ", SelectedFruitNames)
 </p> *@
 
+<button @onclick="HideAndShow">Hide and show</button>
+
 <EditForm Model="@model" OnValidSubmit="Submit">
     <DataAnnotationsValidator />
 
@@ -84,13 +86,24 @@ Welcome to your new app.
                           ValueField="@nameof(Spaceship.Id)"
                           @bind-Value="SelectedStarships2" />
 
-    <RkMultiSelect Id="spaceship"
-                   Label="Space ship"
-                   IsRequired="true"
-                   Items="@AvailableSpaceships"
+    @if (ShowSpaceshipMultiSelect)
+    {
+        <RkMultiSelect Id="spaceship"
+                       Label="Space ship"
+                       IsRequired="true"
+                       Items="@AvailableSpaceships"
+                       ValueSelector="x => x.Id"
+                       DisplayTextSelector="x => x.Name"
+                       @bind-Value="model.SelectedSpaceships" />
+    }
+
+    <RkMultiSelect Id="fruit"
+                   Label="Fruit"
+                   IsRequired="false"
+                   Items="@AvailableFruits"
                    ValueSelector="x => x.Id"
                    DisplayTextSelector="x => x.Name"
-                   @bind-Value="model.SelectedSpaceships" />
+                   @bind-Value="model.SelectedFruits" />
 
     <div class="form-floating mb-3">
         <input type="email" class="form-control form-control-lg" id="floatingInput" placeholder="name@example.com">
@@ -103,4 +116,8 @@ Welcome to your new app.
 
 <p>
     @Output
+</p>
+
+<p>
+    @OutputFuits
 </p>

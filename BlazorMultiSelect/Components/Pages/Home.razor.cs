@@ -7,12 +7,12 @@ public partial class Home
 {
     private FormModel model = new();
 
-    private List<Fruit> Fruits = new()
+    private List<Fruit> AvailableFruits = new()
     {
-        new() { Id = "apple", Name = "Apple" },
-        new() { Id = "banana", Name = "Banana" },
-        new() { Id = "orange", Name = "Orange" },
-        new() { Id = "mango", Name = "Mango" }
+        new() { Id = 1, Name = "Apple" },
+        new() { Id = 2, Name = "Banana" },
+        new() { Id = 3, Name = "Orange" },
+        new() { Id = 4, Name = "Mango" }
     };
 
     private List<Spaceship> AvailableSpaceships { get; set; } = [
@@ -24,6 +24,7 @@ public partial class Home
 
     //private List<Starship> SelectedStarships { get; set; } = [];
     private List<Spaceship> SelectedStarships2 { get; set; } = [];
+    private bool ShowSpaceshipMultiSelect { get; set; } = true;
 
     public Home()
     {
@@ -31,21 +32,28 @@ public partial class Home
     }
 
     private string Output = string.Empty;
+    private string OutputFuits = string.Empty;
     private void Submit()
     {
-        Output = "Selected IDs: " + string.Join(", ", model.SelectedSpaceships.Select(x => x.Name));
+        Output = "Selected space ships: " + string.Join(", ", model.SelectedSpaceships.Select(x => x.Name));
+        OutputFuits = "Selected fruits: " + string.Join(", ", model.SelectedFruits.Select(x => x.Name));
+    }
+
+    private void HideAndShow()
+    {
+        ShowSpaceshipMultiSelect = !ShowSpaceshipMultiSelect;
     }
 }
 
 public class Fruit
 {
-    public string Id { get; set; } = string.Empty;
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
 
 public class FormModel
 {
-    public List<string> SelectedFruitIds { get; set; } = new();
+    public List<Fruit> SelectedFruits { get; set; } = [];
 
     [AtLeastOneElement(ErrorMessage = "Minstens één ruimteschip is verplicht.")]
     public List<Spaceship> SelectedSpaceships { get; set; } = [];
