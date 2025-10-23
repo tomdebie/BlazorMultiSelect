@@ -46,29 +46,30 @@
     text-overflow: ellipsis;
     word-break: break-word;
     word-wrap: break-word;
+    white-space: nowrap;
     padding-top: .75rem;
 }
 
-.rk-multiselect-button{
+.rk-multiselect-button {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-.rk-multiselect-button-caret{
+.rk-multiselect-button-caret {
     padding-left: 10px;
-    border-left: 1px solid red; /*TODO: Fix correct colour*/
-    
-    &::after {
+    border-left: 1px solid var(--rkv-neutral-300);
+}
+
+    .rk-multiselect-button-caret::after {
         content: 'keyboard_arrow_down';
         font-family: 'Material Symbols Rounded';
         font-size: 1.4em;
     }
-}
 
-[aria-expanded="true"]>.rk-multiselect-button-caret::after {
-    content:'keyboard_arrow_up';
+[aria-expanded="true"] > .rk-multiselect-button-caret::after {
+    content: 'keyboard_arrow_up';
 }
 
 
@@ -127,6 +128,8 @@
     display: block
 }
 
-.rk-multiselect-select:not(:has(.rk-multiselect-label.has-value)) > .form-control:focus{
-    box-shadow: 0 0 0 .25rem red; /*TODO: Fix correct colour*/
+.rk-multiselect:not(:has(.invalid-feedback:empty)) > .rk-multiselect-select {
+    border: 1px var(--bs-form-invalid-border-color) solid;
+    border-radius: var(--bs-border-radius);
+    box-shadow: none !important;
 }
