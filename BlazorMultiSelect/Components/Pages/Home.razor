@@ -105,10 +105,12 @@ Welcome to your new app.
                    DisplayTextSelector="x => x.Name"
                    @bind-Value="model.SelectedFruits" />
 
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-2">
         <input type="email" class="form-control form-control-lg" id="floatingInput" placeholder="name@example.com">
         <label for="floatingInput">Email address</label>
     </div>
+
+    <RkFileUpload Id="logo" Label="Voeg logo toe" OnChange="HandleFileUpload"></RkFileUpload>
 
     <button class="btn btn-primary" type="submit">Submit</button>
 </EditForm>
@@ -121,3 +123,8 @@ Welcome to your new app.
 <p>
     @OutputFuits
 </p>
+
+@if (uploadedFileName is not null)
+{
+    <p>Uploaded: @uploadedFileName</p>
+}

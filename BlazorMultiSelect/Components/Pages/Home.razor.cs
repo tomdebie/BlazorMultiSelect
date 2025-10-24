@@ -1,5 +1,6 @@
 using BlazorMultiSelect.Models;
 using BlazorMultiSelect.Validation;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorMultiSelect.Components.Pages;
 
@@ -42,6 +43,28 @@ public partial class Home
     private void HideAndShow()
     {
         ShowSpaceshipMultiSelect = !ShowSpaceshipMultiSelect;
+    }
+
+
+    private string? uploadedFileName;
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        if (e.FileCount == 0)
+        {
+            uploadedFileName = string.Empty;
+            return;
+        }
+
+        var file = e.File;
+        uploadedFileName = file.Name;
+
+        await Task.CompletedTask;
+        // Example: Save to wwwroot/uploads
+        //var path = Path.Combine(Environment.CurrentDirectory, "wwwroot/uploads", file.Name);
+        //using var stream = file.OpenReadStream(maxAllowedSize: 20_000_000);
+        //using var fs = File.Create(path);
+        //await stream.CopyToAsync(fs);
     }
 }
 

@@ -15,11 +15,12 @@ public sealed partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyn
     [Parameter, EditorRequired] public List<TItem> Items { get; set; } = [];
     [Parameter, EditorRequired] public required Func<TItem, int> ValueSelector { get; set; }
     [Parameter, EditorRequired] public required Func<TItem, string> DisplayTextSelector { get; set; }
+    
+    private string SelectedItemsDisplayText { get; set; } = string.Empty;
 
     private IJSObjectReference? _jsModule;
     private ElementReference _multiSelectElementReference;
     private DotNetObjectReference<RkMultiSelect<TItem>>? _multiSelectDotnetReference;
-    private string SelectedItemsDisplayText { get; set; } = string.Empty;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -28,7 +29,6 @@ public sealed partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyn
             _multiSelectDotnetReference = DotNetObjectReference.Create(this);
             _jsModule = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/Pages/RkMultiSelect.razor.js");
             await _jsModule.InvokeVoidAsync("init", _multiSelectElementReference, _multiSelectDotnetReference);
-            //await JsRuntime.InvokeVoidAsync("multiSelect.init", _multiSelectElementReference, _multiSelectDotnetReference);
             if (AutoFocus)
             {
                 await _multiSelectElementReference.FocusAsync();

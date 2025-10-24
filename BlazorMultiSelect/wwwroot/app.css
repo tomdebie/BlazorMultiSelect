@@ -90,7 +90,7 @@ html {
 body {
     font-family: inherit;
     font-weight: inherit;
-    background-color: var(--rkv-light-grey);
+    /*background-color: var(--rkv-light-grey);*/
 }
 
 h1:focus {

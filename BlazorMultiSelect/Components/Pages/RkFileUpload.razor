@@ -1,0 +1,23 @@
+﻿<div class="file-drop-zone @(_selectedFile is null ? "" : "visually-hidden") @(isDragging ? "drag-over" : "") mb-2 @CssClass border-1 rounded rkv-fs-16 form-control"
+     tabindex="0"
+     @ondragover="OnDragOver"
+     @ondragleave="OnDragLeave">
+    
+    <label for="@Id" class="rkv-file-upload-label">
+        <p class="m-0 text-center">
+            <span class="material-symbols-rounded">
+                attach_file
+            </span>
+            @Label
+        </p>
+        <InputFile id="@Id" OnChange="HandleFileSelected" />
+    </label>
+</div>
+
+<div class="d-flex flex-column border border-1 rounded rkv-border-blue-grey p-2 mb-2 @(_selectedFile is null ? "visually-hidden" : "")">
+    <p class="text-center m-0">@_selectedFile?.Name</p>
+    <hr class="my-2"/>
+    <button type="button" class="rkv-cancel-button" aria-label="Verwijderen" @onclick="RemoveFile">
+        Verwijderen
+    </button>
+</div>
