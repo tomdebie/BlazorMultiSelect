@@ -61,6 +61,21 @@ public sealed partial class RkMultiSelect<TItem> : InputBase<List<TItem>>, IAsyn
         UpdateSelection(Convert.ToBoolean(args.Value), value);
     }
 
+    private void OnSelectAll(ChangeEventArgs args)
+    {
+        if (args.Value is null) return;
+        if (CurrentValue?.Count == Items.Count)
+        {
+            CurrentValue = [];
+        }
+        else
+        {
+            CurrentValue = [.. Items];
+        }
+
+        UpdateDisplayText();
+    }
+
     private void UpdateSelection(bool isChecked, TItem value)
     {
         var currentValue = CurrentValue?.ToList() ?? [];

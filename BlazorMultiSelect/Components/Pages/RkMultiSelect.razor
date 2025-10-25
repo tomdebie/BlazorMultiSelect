@@ -28,6 +28,10 @@
          aria-labelledby="rk-multiselect-label-@Id"
          aria-multiselectable="true"
          aria-hidden="true">
+        <div class="form-check select-all" role="option" tabindex="-1" data-value="-1">
+            <input type="checkbox" id="@Id-select-all" checked class="form-check-input m-0" @onchange="@(e => OnSelectAll(e))" />
+            <label for="@Id-select-all" class="form-check-label py-2 ps-3">Selecteer alles</label>
+        </div>
         @foreach(var item in Items.OrderBy(x => DisplayTextSelector(x)))
         {
             var selected = IsChecked(item);

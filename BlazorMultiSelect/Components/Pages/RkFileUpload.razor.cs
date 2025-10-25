@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace BlazorMultiSelect.Components.Pages;
 
